@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bl-spawning-pool
+  namespace: index
+spec:
+  replicas:
+  template:
+    metadata:
+      labels:
+        role: bl-spawning-pool
+        name: bl-spawning-pool
+    spec:
+      containers:
+      - image: gcr.io/bluelens-11b9b/bl-spawning-pool:latest
+        name: bl-spawning-pool
+        ports:
+        - containerPort: 6379

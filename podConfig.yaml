@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: test
+  name: test
+  namespace: testspace
+spec:
+  containers:
+  - env:
+    - name: test
+      value: '123'
+    image: gcr.io/bluelens-11b9b/test:latest
+    name: test
+  restartPolicy: Never

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bl-spawning-pool
+  namespace: index
+  labels:
+    name: bl-spawning-pool
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
+  selector:
+    name: bl-spawning-pool
