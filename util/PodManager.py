@@ -7,46 +7,20 @@ import subprocess
 
 logging.basicConfig(filename='./log/podManager.log', level=logging.DEBUG)
 
+TMP_CONFIG_FILE = "config.yaml"
+
 class PodManager:
     def __init__(self):
         print('init PodManager')
 
     def spawnPod(self, podInfo):
-        pprint('start pod' + podInfo['projectName'])
         logging.debug('%s' % (podInfo))
 
-        if (podInfo['projectName'] is not None):
-            projectName = podInfo['projectName']
-        else :
-            projectName = ""
-
-        if (podInfo['namespace'] is not None):
-            namespace = podInfo['namespace']
-        else :
-            namespace = ""
-
-        if (podInfo['envName'] is not None):
-            envName = podInfo['envName']
-        else :
-            envName = ""
-
-        if (podInfo['envValue'] is not None):
-            envValue = podInfo['envValue']
-        else :
-            envValue = ""
-
-        podFormat = {'apiVersion': 'v1', 'kind': 'Pod',
-                 'metadata': {'name': projectName, 'namespace': namespace, 'labels': {'name': projectName}}, 'spec': {
-            'containers': [{'name': projectName, 'env': [{'value': envValue, 'name': envName}],
-                            'image': 'gcr.io/bluelens-11b9b/'+projectName+':latest'}], 'restartPolicy': 'Never'}}
-
-        podConfig = 'podConfig.yaml'
-
-        with open(podConfig, 'w') as outfile:
+        with open(TMP_CONFIG_FILE, 'w') as outfile:
             try:
-                yaml.dump(podFormat, outfile, default_flow_style=False)
+                yaml.dump(podInfo, outfile, default_flow_style=False)
             finally:
-                self.runInBash(podConfig)
+                self.runInBash(TMP_CONFIG_FILE)
 
 
     def runInBash(self, fileName):

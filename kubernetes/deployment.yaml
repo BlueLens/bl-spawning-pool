@@ -12,7 +12,12 @@ spec:
         name: bl-spawning-pool
     spec:
       containers:
-      - image: gcr.io/bluelens-11b9b/bl-spawning-pool:latest
+      - image: bluelens/bl-spawning-pool:latest
         name: bl-spawning-pool
         ports:
         - containerPort: 6379
+        env:
+        - name: REDIS_SERVER
+          value: "bl-mem-store"
+        - name: SUBSCRIBE_TOPIC
+          value: "spawn/create"

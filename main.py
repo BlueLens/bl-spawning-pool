@@ -8,15 +8,9 @@ import yaml
 
 logging.basicConfig(filename='./log/main.log', level=logging.DEBUG)
 
-
-def pub(r):
-    for n in range(10):
-        r.publish('crawl/done','blah %d' % n)
-        time.sleep(5)
-
 def sub(r, name):
     pubsub = r.pubsub()
-    pubsub.subscribe(['crawl/done'])
+    pubsub.subscribe(['spawn/create'])
 
     podJson = {
         "projectName":"test",
