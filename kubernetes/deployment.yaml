@@ -18,6 +18,6 @@ spec:
         - containerPort: 6379
         env:
         - name: REDIS_SERVER
-          value: "bl-mem-store"
+          value: "bl-mem-store-master"
         - name: SUBSCRIBE_TOPIC
-          value: "spawn/create"
+          value: "spawn/*"

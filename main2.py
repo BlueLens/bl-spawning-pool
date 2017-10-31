@@ -1,5 +1,3 @@
-from multiprocessing import Process
-import time
 import redis
 import os
 import logging
@@ -10,26 +8,33 @@ REDIS_SERVER = os.environ['REDIS_SERVER']
 SUBSCRIBE_TOPIC = os.environ['SUBSCRIBE_TOPIC']
 
 logging.basicConfig(filename='./log/main.log', level=logging.DEBUG)
+rconn = redis.StrictRedis(REDIS_SERVER, port=6379)
+spawn = PodManager()
 
-def sub(rconn, name):
-    pubsub = rconn.pubsub()
-    pubsub.subscribe([SUBSCRIBE_TOPIC])
+def sub():
+  pubsub = rconn.pubsub()
+  pubsub.psubscribe([SUBSCRIBE_TOPIC])
 
-    for item in pubsub.listen():
-        logging.debug('%s' % (item['data']))
-        print('%s' % (item['data']))
+  for item in pubsub.listen():
+    logging.debug('%s' % (item['data']))
+    try:
+      if (isinstance(item['data'], int)):
+        continue
+    except ValueError:
+      print("wait subscribe")
 
-        try:
-            if (isinstance( item['data'], int )):
-                print('type is not json')
-            else:
-                work(item['data'])
-        except ValueError:
-            print("wait subscribe")
+    if item['channel'] == b'spawn/create':
+      data = json.loads(item['data'].decode('utf-8'))
+      create(data)
+    elif item['channel'] == b'spawn/delete':
+      data = json.loads(item['data'].decode('utf-8'))
+      delete(data)
 
-def work(data):
-    pod = PodManager()
-    pod.spawnPod(data)
+def create(data):
+  spawn.create(data)
+
+def delete(data):
+  spawn.delete(data)
 
 def parse(text):
     try:
@@ -39,5 +44,4 @@ def parse(text):
         return None
 
 if __name__ == '__main__':
-    rconn = redis.StrictRedis(REDIS_SERVER, port=6379)
-    Process(target=sub, args=(rconn, 'xxx')).start()
+  sub()

@@ -2,8 +2,8 @@ import json
 import os
 from pprint import pprint
 import logging
-import yaml
 import subprocess
+import yaml
 
 logging.basicConfig(filename='./log/podManager.log', level=logging.DEBUG)
 
@@ -13,19 +13,24 @@ class PodManager:
     def __init__(self):
         print('init PodManager')
 
-    def spawnPod(self, podInfo):
-        logging.debug('%s' % (podInfo))
+    def create(self, data):
+        logging.debug('%s' % (data))
 
         with open(TMP_CONFIG_FILE, 'w') as outfile:
             try:
-                yaml.dump(podInfo, outfile, default_flow_style=False)
+              yaml.dump(data, outfile, default_flow_style=False)
             finally:
-                self.runInBash(TMP_CONFIG_FILE)
+              cmd = 'cat config.yaml && kubectl --namespace=index create -f ' + TMP_CONFIG_FILE
+              self.runInBash(cmd)
 
+    def delete(self, data):
+        print(data)
+        logging.debug(data)
+        cmd = 'kubectl delete pods --namespace=' + data['namespace'] + ' -l SPAWN_ID=' + data['id']
+        logging.debug(cmd)
+        self.runInBash(cmd)
 
-    def runInBash(self, fileName):
-
-        cmd = 'kubectl --namespace=index create -f ' + fileName
+    def runInBash(self, cmd):
         print(cmd)
         logging.debug('%s' % (cmd))
 
@@ -35,6 +40,3 @@ class PodManager:
         logging.debug('%s' % (output))
         # print('cat finished with return code %d' % output.returncode)
 
-
-    def printPod(self):
-        pprint(self.__podJson)

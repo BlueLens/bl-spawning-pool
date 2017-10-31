@@ -17,5 +17,3 @@ kubectl --namespace=$NAMESPACE rollout status deployment/$IMAGE
 
 #restart pod
 kubectl --namespace=$NAMESPACE delete pod -l name=$IMAGE
-
-
