@@ -3,7 +3,7 @@
 export ORG="bluelens"
 export IMAGE="bl-spawning-pool"
 export TAG='latest'
-export NAMESPACE="index"
+export NAMESPACE="dev"
 
 docker login
 

@@ -1,14 +1,13 @@
 import redis
 import os
-import logging
 import json
 from util.PodManager import PodManager
 
 REDIS_SERVER = os.environ['REDIS_SERVER']
+REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
 SUBSCRIBE_TOPIC = os.environ['SUBSCRIBE_TOPIC']
 
-logging.basicConfig(filename='./log/main.log', level=logging.DEBUG)
-rconn = redis.StrictRedis(REDIS_SERVER, port=6379)
+rconn = redis.StrictRedis(REDIS_SERVER, port=6379, password=REDIS_PASSWORD)
 spawn = PodManager()
 
 def sub():
@@ -16,7 +15,6 @@ def sub():
   pubsub.psubscribe([SUBSCRIBE_TOPIC])
 
   for item in pubsub.listen():
-    logging.debug('%s' % (item['data']))
     try:
       if (isinstance(item['data'], int)):
         continue

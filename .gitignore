@@ -94,5 +94,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+./kubernetes/deployment-dev.yaml
+./kubernetes/deployment.yaml
+./kubernetes/service.yaml
+./kubernetes/service-dev.yaml
 
 .idea/

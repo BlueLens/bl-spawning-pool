@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM bluelens/python:3.6
 MAINTAINER bluehackmaster <master@bluehack.net>
 
 USER root
@@ -22,5 +22,5 @@ ENV APP_ENV development
 EXPOSE 6379
 
 # Running Python Application
-CMD ["python", "main2.py" ]
+CMD ["python3", "run.py" ]
 
