@@ -22,5 +22,5 @@ ENV APP_ENV development
 EXPOSE 6379
 
 # Running Python Application
-CMD ["python3", "run.py" ]
+CMD ["python3", "main2.py" ]
 

@@ -1,11 +1,18 @@
 import redis
 import os
 import json
+from bluelens_log import Logging
 from util.PodManager import PodManager
 
 REDIS_SERVER = os.environ['REDIS_SERVER']
 REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
 SUBSCRIBE_TOPIC = os.environ['SUBSCRIBE_TOPIC']
+
+options = {
+  'REDIS_SERVER': REDIS_SERVER,
+  'REDIS_PASSWORD': REDIS_PASSWORD
+}
+log = Logging(options, tag='bl-spawning-pool')
 
 rconn = redis.StrictRedis(REDIS_SERVER, port=6379, password=REDIS_PASSWORD)
 spawn = PodManager()
